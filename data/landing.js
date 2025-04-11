@@ -93,7 +93,7 @@ export const testimonialsData = [
     role: "Small Business Owner",
     image: "https://randomuser.me/api/portraits/men/52.jpg",
     quote:
-      "ProfitPulse has completely changed how I handle my business finances. The AI insights helped me cut down on unnecessary expenses and improve cash flow.",
+      "Smart Spend has completely changed how I handle my business finances. The AI insights helped me cut down on unnecessary expenses and improve cash flow.",
   },
   {
     name: "Sam Thomas",
@@ -107,6 +107,6 @@ export const testimonialsData = [
     role: "Financial Consultant",
     image: "https://randomuser.me/api/portraits/men/60.jpg",
     quote:
-      "I suggest ProfitPulse to all my clients. The analytics and currency support are solid — especially useful for people working with international portfolios.",
+      "I suggest Smart Spend to all my clients. The analytics and currency support are solid — especially useful for people working with international portfolios.",
   }
 ];
