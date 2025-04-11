@@ -1,3 +1,5 @@
+// file: app/(main)/transaction/create/AddTransactionClient.jsx
+
 "use client";
 
 import { AddTransactionForm } from "../_components/transaction-form";
