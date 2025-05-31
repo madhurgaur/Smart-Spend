@@ -13,10 +13,11 @@ const useFetch = (cb) => {
     try {
       const response = await cb(...args);
       setData(response);
-      setError(null);
+      return response; // ✅ This is what was missing
     } catch (error) {
       setError(error);
       toast.error(error.message);
+      return undefined; // ✅ To avoid returning nothing
     } finally {
       setLoading(false);
     }

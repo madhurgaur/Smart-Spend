@@ -22,6 +22,9 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
   const [newBudget, setNewBudget] = useState(
     initialBudget?.amount?.toString() || ""
   );
+  const [budgetAmount, setBudgetAmount] = useState(
+    initialBudget?.amount || 0
+  );
 
   const {
     loading: isLoading,
@@ -29,21 +32,30 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
     data: updatedBudget,
     error,
   } = useFetch(updateBudget);
+  console.log("current expenses ",currentExpenses);
 
-  const percentUsed = initialBudget
-    ? (currentExpenses / initialBudget.amount) * 100
+  const percentUsed = budgetAmount
+    ? (currentExpenses / budgetAmount) * 100
     : 0;
 
-  const handleUpdateBudget = async () => {
-    const amount = parseFloat(newBudget);
+ const handleUpdateBudget = async () => {
+  const amount = parseFloat(newBudget);
+  console.log("🚀 Triggered handleUpdateBudget with amount:", amount);
 
-    if (isNaN(amount) || amount <= 0) {
-      toast.error("Please enter a valid amount");
-      return;
-    }
+  if (isNaN(amount) || amount <= 0) {
+    toast.error("Please enter a valid amount");
+    console.log("❌ Invalid amount");
+    return;
+  }
 
-    await updateBudgetFn(amount);
-  };
+  const response = await updateBudgetFn(amount);
+  console.log("✅ Response from updateBudgetFn:", response);
+
+  if (response?.success) {
+    setBudgetAmount(amount); // 🟢 Update local state
+    console.log("✅ Budget amount state updated to:", amount);
+  }
+};
 
   const handleCancel = () => {
     setNewBudget(initialBudget?.amount?.toString() || "");
@@ -102,12 +114,13 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
             ) : (
               <>
                 <CardDescription>
-                  {initialBudget
-                    ? `$${currentExpenses.toFixed(
+                  {budgetAmount
+                    ? `$${currentExpenses.toFixed(2)} of $${budgetAmount.toFixed(
                         2
-                      )} of $${initialBudget.amount.toFixed(2)} spent`
+                      )} spent`
                     : "No budget set"}
                 </CardDescription>
+
                 <Button
                   variant="ghost"
                   size="icon"
@@ -122,17 +135,16 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
         </div>
       </CardHeader>
       <CardContent>
-        {initialBudget && (
+        {budgetAmount && (
           <div className="space-y-2">
             <Progress
               value={percentUsed}
               extraStyles={`${
-                // add to Progress component
                 percentUsed >= 90
                   ? "bg-red-500"
                   : percentUsed >= 75
-                    ? "bg-yellow-500"
-                    : "bg-green-500"
+                  ? "bg-yellow-500"
+                  : "bg-green-500"
               }`}
             />
             <p className="text-xs text-muted-foreground text-right">
